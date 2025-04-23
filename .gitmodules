@@ -1,0 +1,3 @@
+[submodule "ComfyScale"]
+	path = ComfyScale
+	url = https://github.com/vvauijij/ComfyScale
