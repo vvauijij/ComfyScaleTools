@@ -1,0 +1,61 @@
+services:
+  comfy_scale:
+    container_name: comfy_scale
+    build:
+      context: ./ComfyScale
+    environment:
+      - METRICS_PORT=8080            # ray
+    command: "python3 main.py"
+    ports:
+      - "8188:8188"                  # comfy
+      - "8080:8080"                  # ray metrics
+      - "8265:8265"                  # ray dashboard
+    shm_size: "5gb"
+    volumes:
+      - ./models:/ComfyScale/models
+      - ./input:/ComfyScale/input
+  
+  comfy_ui:
+    container_name: comfy_ui
+    build:
+      context: ./ComfyUI
+    environment:
+      - METRICS_PORT=8188            # metrics
+    command: "python3 main.py --cpu"
+    ports:
+      - "8189:8188"                  # comfy
+    volumes:
+      - ./models:/ComfyScale/models
+      - ./input:/ComfyScale/input
+
+  comfy_ui_cpu:
+    image: prom/node-exporter
+    container_name: comfy_ui_cpu
+    pid: "host"
+    ports:
+      - "9100:9100"                  # metrics
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=vvauijij
+      - GF_SECURITY_ADMIN_PASSWORD=woe203isojb102ie
+    volumes:
+      - ./grafana.yml:/etc/grafana/provisioning/datasources/datasource.yml
+
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:latest
+    volumes:
+      - "./prometheus.yml:/etc/prometheus/prometheus.yml"
+    ports:
+      - "9090:9090"

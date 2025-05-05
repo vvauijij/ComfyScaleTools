@@ -1,0 +1,22 @@
+global:
+  scrape_interval: 300ms
+
+scrape_configs:
+  - job_name: 'comfy_scale'
+    static_configs:
+      - targets: ['comfy_scale:8080']
+        labels:
+          gpu_type: ComfyScale_A100
+
+  - job_name: 'comfy_ui'
+    static_configs:
+      - targets: ['comfy_ui:8188']
+        labels:
+          gpu_type: ComfyUI_RTX4090
+
+  - job_name: 'comfy_ui_cpu'
+    static_configs:
+      - targets: ['comfy_ui_cpu:9100']
+        labels:
+          role: system_monitor
+          gpu_type: ComfyUI_RTX4090
