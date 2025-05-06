@@ -81,7 +81,7 @@
     "inputs": {
       "text": "{{positive_parallel2}}",
       "clip": [
-        "5",
+        "19",
         1
       ]
     },
@@ -94,7 +94,7 @@
     "inputs": {
       "text": "{{negative_parallel2}}",
       "clip": [
-        "5",
+        "19",
         1
       ]
     },
@@ -112,7 +112,7 @@
       "scheduler": "normal",
       "denoise": 1,
       "model": [
-        "5",
+        "19",
         0
       ],
       "positive": [
@@ -177,6 +177,15 @@
     "class_type": "EmptyLatentImage",
     "_meta": {
       "title": "Empty Latent Image"
+    }
+  },
+  "19": {
+    "inputs": {
+      "ckpt_name": "design_checkpoint2.safetensors"
+    },
+    "class_type": "CheckpointLoaderSimple",
+    "_meta": {
+      "title": "Load Checkpoint"
     }
   }
 }
