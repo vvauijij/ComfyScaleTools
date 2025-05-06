@@ -1,36 +1,65 @@
 services:
-  comfy_scale:
-    container_name: comfy_scale
+####################
+##   comfyscale   ##
+####################
+  comfyscale:
+    container_name: comfyscale
     build:
       context: ./ComfyScale
     environment:
       - METRICS_PORT=8080            # ray
     command: "python3 main.py"
+    shm_size: "16gb"
+    runtime: nvidia
+    deploy:
+      resources:
+        limits:
+          cpus: '8.0'
+          memory: 48G
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['0']
+              capabilities: [gpu]
     ports:
       - "8188:8188"                  # comfy
       - "8080:8080"                  # ray metrics
       - "8265:8265"                  # ray dashboard
-    shm_size: "5gb"
     volumes:
-      - ./models:/ComfyScale/models
+      - ./models:/ComfyScale/models:ro
       - ./input:/ComfyScale/input
-  
-  comfy_ui:
-    container_name: comfy_ui
+
+
+#################
+##   comfyui   ##
+#################
+  comfyui:
+    container_name: comfyui
     build:
       context: ./ComfyUI
     environment:
       - METRICS_PORT=8188            # metrics
-    command: "python3 main.py --cpu"
+    command: "python3 main.py"
+    runtime: nvidia
+    deploy:
+      resources:
+        limits:
+          cpus: '8.0'
+          memory: 48G
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['1']
+              capabilities: [gpu]
     ports:
       - "8189:8188"                  # comfy
     volumes:
-      - ./models:/ComfyScale/models
-      - ./input:/ComfyScale/input
+      - ./models:/ComfyUI/models:ro
+      - ./input:/ComfyUI/input
 
-  comfy_ui_cpu:
-    image: prom/node-exporter
-    container_name: comfy_ui_cpu
+  comfyui_cpu:
+    image: prom/node-exporter:latest
+    container_name: comfyui_cpu
     pid: "host"
     ports:
       - "9100:9100"                  # metrics
@@ -40,6 +69,35 @@ services:
     command:
       - '--path.procfs=/host/proc'
       - '--path.sysfs=/host/sys'
+  
+  comfyui_gpu:
+    image: nvidia/dcgm-exporter:latest
+    container_name: comfyui_gpu
+    environment:
+      - DCGM_EXPORTER_LISTEN=0.0.0.0:9400
+    cap_add:
+      - SYS_ADMIN
+    runtime: nvidia
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['1']
+              capabilities: [gpu]
+    ports:
+      - "9400:9400"                   # metrics
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+
+#################
+##   metrics   ##
+#################
+  benchmark:
+    container_name: benchmark
+    build:
+      context: ./benchmark
 
   grafana:
     container_name: grafana
@@ -57,5 +115,9 @@ services:
     image: prom/prometheus:latest
     volumes:
       - "./prometheus.yml:/etc/prometheus/prometheus.yml"
+      - prometheus_data:/prometheus
     ports:
       - "9090:9090"
+
+volumes:
+  prometheus_data:

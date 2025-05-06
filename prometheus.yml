@@ -2,21 +2,28 @@ global:
   scrape_interval: 300ms
 
 scrape_configs:
-  - job_name: 'comfy_scale'
+  - job_name: 'comfyscale'
     static_configs:
-      - targets: ['comfy_scale:8080']
+      - targets: ['comfyscale:8080']
         labels:
-          gpu_type: ComfyScale_A100
+          gpu_type: ComfyScale_T4
 
-  - job_name: 'comfy_ui'
+  - job_name: 'comfyui'
     static_configs:
-      - targets: ['comfy_ui:8188']
+      - targets: ['comfyui:8188']
         labels:
-          gpu_type: ComfyUI_RTX4090
+          gpu_type: ComfyUI_T4
 
-  - job_name: 'comfy_ui_cpu'
+  - job_name: 'comfyui_cpu'
     static_configs:
-      - targets: ['comfy_ui_cpu:9100']
+      - targets: ['comfyui_cpu:9100']
         labels:
           role: system_monitor
-          gpu_type: ComfyUI_RTX4090
+          gpu_type: ComfyUI_T4
+  
+  - job_name: 'comfyui_gpu'
+    static_configs:
+      - targets: ['comfyui_gpu:9400']
+        labels:
+          role: system_monitor
+          gpu_type: ComfyUI_T4

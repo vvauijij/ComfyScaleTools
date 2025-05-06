@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 2,
+  "id": 1,
   "links": [],
   "panels": [
     {
@@ -82,8 +82,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -114,7 +113,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "11.6.1",
       "targets": [
         {
           "disableTextWrap": false,
@@ -192,8 +191,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -224,12 +222,12 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "11.6.1",
       "targets": [
         {
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "histogram_quantile($percentile, sum by (le, gpu_type) (\n  rate(ray_request_latency_bucket{\n    gpu_type=~\"$gpu_type\",\n    workflow=~\"$workflow\"\n  }[$__rate_interval])\n))",
+          "expr": "histogram_quantile($percentile, sum by (le, gpu_type) (\n  rate(ray_execution_latency_bucket{\n    gpu_type=~\"$gpu_type\",\n    workflow=~\"$workflow\"\n  }[$__rate_interval])\n))",
           "fullMetaSearch": false,
           "includeNullMetadata": false,
           "legendFormat": "__auto",
@@ -243,7 +241,7 @@
             "uid": "P1809F7CD0C75ACF3"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile($percentile, sum by (le, gpu_type) (\n  rate(request_latency_bucket{\n    gpu_type=~\"$gpu_type\",\n    workflow=~\"$workflow\"\n  }[$__rate_interval])\n))",
+          "expr": "histogram_quantile($percentile, sum by (le, gpu_type) (\n  rate(execution_latency_bucket{\n    gpu_type=~\"$gpu_type\",\n    workflow=~\"$workflow\"\n  }[$__rate_interval])\n))",
           "hide": false,
           "instant": false,
           "legendFormat": "__auto",
@@ -251,7 +249,7 @@
           "refId": "B"
         }
       ],
-      "title": "RT",
+      "title": "ET",
       "type": "timeseries"
     },
     {
@@ -302,8 +300,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -334,7 +331,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "11.6.1",
       "targets": [
         {
           "editorMode": "code",
@@ -342,6 +339,19 @@
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "P1809F7CD0C75ACF3"
+          },
+          "editorMode": "code",
+          "expr": "avg by (gpu_type) (DCGM_FI_DEV_GPU_UTIL{gpu_type=~\"$gpu_type\"})",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "B"
         }
       ],
       "title": "GPU%",
@@ -395,8 +405,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -427,7 +436,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "11.6.1",
       "targets": [
         {
           "editorMode": "code",
@@ -502,8 +511,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -559,7 +567,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "11.6.1",
       "targets": [
         {
           "disableTextWrap": false,
@@ -587,6 +595,115 @@
         }
       ],
       "title": "RPM Error",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "P1809F7CD0C75ACF3"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 17
+      },
+      "id": 57,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.6.1",
+      "targets": [
+        {
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "histogram_quantile($percentile, sum by (le, gpu_type) (\n  rate(ray_request_latency_bucket{\n    gpu_type=~\"$gpu_type\",\n    workflow=~\"$workflow\"\n  }[$__rate_interval])\n))",
+          "fullMetaSearch": false,
+          "includeNullMetadata": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "P1809F7CD0C75ACF3"
+          },
+          "editorMode": "code",
+          "expr": "histogram_quantile($percentile, sum by (le, gpu_type) (\n  rate(request_latency_bucket{\n    gpu_type=~\"$gpu_type\",\n    workflow=~\"$workflow\"\n  }[$__rate_interval])\n))",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "RT",
       "type": "timeseries"
     },
     {
@@ -1515,7 +1632,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "11.6.1",
       "targets": [
         {
           "datasource": {
@@ -27173,7 +27290,7 @@
   ],
   "preload": false,
   "refresh": "5s",
-  "schemaVersion": 40,
+  "schemaVersion": 41,
   "tags": [],
   "templating": {
     "list": [
@@ -27351,13 +27468,12 @@
     ]
   },
   "time": {
-    "from": "now-5m",
+    "from": "2025-05-05T14:27:01.000Z",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "ComfyScale",
   "uid": "rayDefaultDashboar",
-  "version": 4,
-  "weekStart": ""
+  "version": 2
 }
