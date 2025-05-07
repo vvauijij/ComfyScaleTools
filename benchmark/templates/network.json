@@ -2,7 +2,7 @@
   "1": {
     "inputs": {
       "text": "{{positive_simple}}",
-      "latency_mu": 15,
+      "latency_mu": 5,
       "latency_sigma": 1,
       "image": [
         "2",

@@ -7,7 +7,9 @@ services:
     build:
       context: ./ComfyScale
     environment:
-      - METRICS_PORT=8080            # ray
+      - NUM_GPUS=1
+      - NUM_PARALLELISM=2
+      - METRICS_PORT=8080            # metrics
     command: "python3 main.py"
     shm_size: "16gb"
     runtime: nvidia
@@ -27,7 +29,6 @@ services:
       - "8265:8265"                  # ray dashboard
     volumes:
       - ./models:/ComfyScale/models:ro
-      - ./input:/ComfyScale/input
 
 
 #################
@@ -55,7 +56,6 @@ services:
       - "8189:8188"                  # comfy
     volumes:
       - ./models:/ComfyUI/models:ro
-      - ./input:/ComfyUI/input
 
   comfyui_cpu:
     image: prom/node-exporter:latest
