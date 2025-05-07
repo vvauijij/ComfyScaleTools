@@ -1,0 +1,128 @@
+services:
+  comfyui_balancer:
+    image: nginx:latest
+    container_name: comfyui_balancer
+    depends_on:
+      - comfyui1
+      - comfyui2
+    ports:
+      - '8000:8000'                               # 8000: comfy app
+    volumes:
+      - /root/comfyui-cluster-2.conf:/etc/nginx/conf.d/comfyui-cluster-2.conf:ro  
+
+  comfyui1:
+    container_name: comfyui1
+    build:
+      context: ./ComfyUI
+    command: 'python3 main.py'
+    runtime: nvidia
+    deploy:
+      resources:
+        limits:
+          cpus: '4.0'
+          memory: 24G
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['0']
+              capabilities: [gpu]
+    ports:
+      - '8001:8188'                               # 8001: comfy metrics
+    volumes:
+      - /models:/ComfyUI/models:ro
+  
+  comfyui2:
+    container_name: comfyui2
+    build:
+      context: ./ComfyUI
+    command: 'python3 main.py'
+    runtime: nvidia
+    deploy:
+      resources:
+        limits:
+          cpus: '4.0'
+          memory: 24G
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['1']
+              capabilities: [gpu]
+    ports:
+      - '8002:8188'                               # 8002: comfy metrics
+    volumes:
+      - /models:/ComfyUI/models:ro
+    
+  comfyui3:
+    container_name: comfyui3
+    build:
+      context: ./ComfyUI
+    command: 'python3 main.py'
+    runtime: nvidia
+    deploy:
+      resources:
+        limits:
+          cpus: '4.0'
+          memory: 24G
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['2']
+              capabilities: [gpu]
+    ports:
+      - '8003:8188'                               # 8002: comfy metrics
+    volumes:
+      - /models:/ComfyUI/models:ro
+    
+  comfyui4:
+    container_name: comfyui4
+    build:
+      context: ./ComfyUI
+    command: 'python3 main.py'
+    runtime: nvidia
+    deploy:
+      resources:
+        limits:
+          cpus: '4.0'
+          memory: 24G
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['3']
+              capabilities: [gpu]
+    ports:
+      - '8004:8188'                               # 8004: comfy metrics
+    volumes:
+      - /models:/ComfyUI/models:ro
+
+  comfyui_cpu:
+    image: prom/node-exporter:latest
+    container_name: comfyui_cpu
+    pid: 'host'
+    ports:
+      - '9000:9100'                               # 9000 : cpu metrics
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+  
+  comfyui_gpu:
+    image: nvidia/dcgm-exporter:latest
+    container_name: comfyui_gpu
+    environment:
+      - DCGM_EXPORTER_LISTEN=0.0.0.0:9400
+    cap_add:
+      - SYS_ADMIN
+    runtime: nvidia
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['0', '1', '2', '3']
+              capabilities: [gpu]
+    ports:
+      - '10000:9400'                               # 10000 : gpu metrics
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock

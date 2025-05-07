@@ -335,7 +335,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "(sum by (gpu_type)(ray_node_gpus_utilization{gpu_type=~\"$gpu_type\"}))",
+          "expr": "avg by (gpu_type) (\n  ray_node_gpus_utilization{gpu_type=~\"$gpu_type\"}\n)",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -27468,7 +27468,7 @@
     ]
   },
   "time": {
-    "from": "2025-05-05T14:27:01.000Z",
+    "from": "2025-05-07T12:38:26.000Z",
     "to": "now"
   },
   "timepicker": {},

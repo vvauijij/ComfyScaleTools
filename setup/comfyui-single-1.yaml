@@ -1,0 +1,55 @@
+services:
+  comfyui:
+    container_name: comfyui
+    build:
+      context: ./ComfyUI
+    command: 'python3 main.py'
+    runtime: nvidia
+    deploy:
+      resources:
+        limits:
+          cpus: '16.0'
+          memory: 96G
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['0']
+              capabilities: [gpu]
+    ports:
+      - '8000:8188'                               # 8000: comfy app
+      - '8001:8188'                               # 8000: comfy metrics
+    volumes:
+      - /models:/ComfyUI/models:ro
+
+  comfyui_cpu:
+    image: prom/node-exporter:latest
+    container_name: comfyui_cpu
+    pid: 'host'
+    ports:
+      - '9000:9100'                               # 9000 : cpu metrics
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+  
+  comfyui_gpu:
+    image: nvidia/dcgm-exporter:latest
+    container_name: comfyui_gpu
+    environment:
+      - DCGM_EXPORTER_LISTEN=0.0.0.0:9400
+    cap_add:
+      - SYS_ADMIN
+    runtime: nvidia
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['0']
+              capabilities: [gpu]
+    ports:
+      - '10000:9400'                               # 10000 : gpu metrics
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
