@@ -1,8 +1,7 @@
 services:
   comfyscale:
     container_name: comfyscale
-    build:
-      context: ./ComfyScale
+    image: ghcr.io/vvauijij/comfyscale:comfyscale-v0.0.4
     depends_on:
       - comfyscale_head
     environment:
@@ -16,8 +15,7 @@ services:
 
   comfyscale_head:
     container_name: comfyscale_head
-    build:
-      context: ./ComfyScale
+    image: ghcr.io/vvauijij/comfyscale:comfyscale-v0.0.4
     environment:
       - PYTHONPATH=/ComfyScale
     command: >
@@ -52,8 +50,7 @@ services:
     container_name: comfyscale_node1
     depends_on:
       - comfyscale_head
-    build:
-      context: ./ComfyScale
+    image: ghcr.io/vvauijij/comfyscale:comfyscale-v0.0.4
     environment:
       - PYTHONPATH=/ComfyScale
     command: >
@@ -82,8 +79,7 @@ services:
     container_name: comfyscale_node2
     depends_on:
       - comfyscale_head
-    build:
-      context: ./ComfyScale
+    image: ghcr.io/vvauijij/comfyscale:comfyscale-v0.0.4
     environment:
       - PYTHONPATH=/ComfyScale
     command: >
@@ -112,8 +108,7 @@ services:
     container_name: comfyscale_node3
     depends_on:
       - comfyscale_head
-    build:
-      context: ./ComfyScale
+    image: ghcr.io/vvauijij/comfyscale:comfyscale-v0.0.4
     environment:
       - PYTHONPATH=/ComfyScale
     command: >

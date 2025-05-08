@@ -12,8 +12,7 @@ services:
 
   comfyui1:
     container_name: comfyui1
-    build:
-      context: ./ComfyUI
+    image: ghcr.io/vvauijij/comfyui:comfyui-v0.0.3
     command: 'python3 main.py'
     runtime: nvidia
     deploy:
@@ -33,8 +32,7 @@ services:
   
   comfyui2:
     container_name: comfyui2
-    build:
-      context: ./ComfyUI
+    image: ghcr.io/vvauijij/comfyui:comfyui-v0.0.3
     command: 'python3 main.py'
     runtime: nvidia
     deploy:

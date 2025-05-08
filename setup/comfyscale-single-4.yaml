@@ -1,11 +1,10 @@
 services:
   comfyscale:
     container_name: comfyscale
-    build:
-      context: ./ComfyScale
+    image: ghcr.io/vvauijij/comfyscale:comfyscale-v0.0.4
     environment:
-      - NUM_GPUS=2
-      - NUM_PARALLELISM=4
+      - NUM_GPUS=4
+      - NUM_PARALLELISM=8
     command: 'python3 main.py'
     shm_size: '32gb'
     runtime: nvidia

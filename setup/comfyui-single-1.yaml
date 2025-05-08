@@ -1,8 +1,7 @@
 services:
   comfyui:
     container_name: comfyui
-    build:
-      context: ./ComfyUI
+    image: ghcr.io/vvauijij/comfyui:comfyui-v0.0.3
     command: 'python3 main.py'
     runtime: nvidia
     deploy:
@@ -17,7 +16,7 @@ services:
               capabilities: [gpu]
     ports:
       - '8000:8188'                               # 8000: comfy app
-      - '8001:8188'                               # 8000: comfy metrics
+      - '8001:8188'                               # 8001: comfy metrics
     volumes:
       - /models:/ComfyUI/models:ro
 
