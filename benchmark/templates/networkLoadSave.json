@@ -2,8 +2,8 @@
   "1": {
     "inputs": {
       "text": "{{positive_simple}}",
-      "latency_mu": 5,
-      "latency_sigma": 1,
+      "latency_mu": 0.5,
+      "latency_sigma": 0.1,
       "image": [
         "2",
         0
@@ -25,7 +25,7 @@
   },
   "5": {
     "inputs": {
-      "ckpt_name": "tryOn_checkpoint.safetensors"
+      "ckpt_name": "design_checkpoint1.ckpt"
     },
     "class_type": "CheckpointLoaderSimple",
     "_meta": {
@@ -50,7 +50,7 @@
   },
   "7": {
     "inputs": {
-      "text": "{{positive_simple}}",
+      "text": "positive_simple",
       "clip": [
         "5",
         1
@@ -63,7 +63,7 @@
   },
   "8": {
     "inputs": {
-      "text": "{{negative_simple}}",
+      "text": "negative_simple",
       "clip": [
         "5",
         1
@@ -120,11 +120,26 @@
       "title": "VAE Decode"
     }
   },
-  "11": {
+  "12": {
     "inputs": {
-      "filename_prefix": "network_result",
-      "images": [
+      "text": "{{positive_simple}}",
+      "latency_mu": 0.5,
+      "latency_sigma": 0.1,
+      "image": [
         "10",
+        0
+      ]
+    },
+    "class_type": "NetworkRequestMocker",
+    "_meta": {
+      "title": "Mock Network Request"
+    }
+  },
+  "13": {
+    "inputs": {
+      "filename_prefix": "networkLoadSave",
+      "images": [
+        "12",
         0
       ]
     },

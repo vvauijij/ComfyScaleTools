@@ -1,7 +1,7 @@
 {
   "5": {
     "inputs": {
-      "ckpt_name": "basic_checkpoint.safetensors"
+      "ckpt_name": "tryOn_checkpoint.safetensors"
     },
     "class_type": "CheckpointLoaderSimple",
     "_meta": {
@@ -181,7 +181,7 @@
   },
   "19": {
     "inputs": {
-      "ckpt_name": "design_checkpoint2.safetensors"
+      "ckpt_name": "design_checkpoint1.ckpt"
     },
     "class_type": "CheckpointLoaderSimple",
     "_meta": {

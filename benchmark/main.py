@@ -20,6 +20,7 @@ from aiohttp import ClientSession, TCPConnector
 
 from generators.simple_generator import SimplePromptGenerator
 from generators.network_generator import NetworkPromptGenerator
+from generators.networkLoadSave_generator import NetworkLoadSavePromptGenerator
 from generators.parallel_generator import ParallelPromptGenerator
 from generators.tryOn_generator import TryOnPromptGenerator
 from generators.video_generator import VideoPromptGenerator
@@ -29,6 +30,7 @@ from generators.design_generator import DesignPromptGenerator
 WORKFLOW_REGISTRY = {
     SimplePromptGenerator.WORKFLOW_TYPE: SimplePromptGenerator,
     NetworkPromptGenerator.WORKFLOW_TYPE: NetworkPromptGenerator,
+    NetworkLoadSavePromptGenerator.WORKFLOW_TYPE: NetworkLoadSavePromptGenerator,
     ParallelPromptGenerator.WORKFLOW_TYPE: ParallelPromptGenerator,
     TryOnPromptGenerator.WORKFLOW_TYPE: TryOnPromptGenerator,
     VideoPromptGenerator.WORKFLOW_TYPE: VideoPromptGenerator,
