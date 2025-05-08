@@ -1,29 +1,45 @@
 global:
-  scrape_interval: 300ms
+  scrape_interval: 1400ms
 
 scrape_configs:
-  - job_name: 'comfyscale'
+  - job_name: 'comfyscale-single-1'
     static_configs:
-      - targets: ['comfyscale:8080']
+      - targets: ['90.156.157.202:8001']
         labels:
-          gpu_type: ComfyScale_T4
-
-  - job_name: 'comfyui'
-    static_configs:
-      - targets: ['comfyui:8188']
-        labels:
-          gpu_type: ComfyUI_T4
-
-  - job_name: 'comfyui_cpu'
-    static_configs:
-      - targets: ['comfyui_cpu:9100']
-        labels:
-          role: system_monitor
-          gpu_type: ComfyUI_T4
+          gpu_type: comfyscale-single-1-a5000
   
-  - job_name: 'comfyui_gpu'
+  - job_name: 'comfyscale-single-2'
     static_configs:
-      - targets: ['comfyui_gpu:9400']
+      - targets: ['176.114.90.148:8001']
         labels:
-          role: system_monitor
-          gpu_type: ComfyUI_T4
+          gpu_type: comfyscale-single-2-t4
+  
+  - job_name: 'comfyscale-single-4'
+    static_configs:
+      - targets: ['212.74.226.66:8001']
+        labels:
+          gpu_type: comfyscale-single-4-rtx
+
+  - job_name: 'comfyscale-cluster-2'
+    static_configs:
+      - targets: ['176.114.65.51:8001', '176.114.65.51:8002']
+        labels:
+          gpu_type: comfyscale-cluster-2-t4
+  
+  - job_name: 'comfyui-single-1'
+    static_configs:
+      - targets: ['31.128.49.64:8001', '31.128.49.64:9000', '31.128.49.64:10000']
+        labels:
+          gpu_type: comfyui-single-1-a5000
+  
+  - job_name: 'comfyui-cluster-2'
+    static_configs:
+      - targets: ['212.74.226.188:8001', '212.74.226.188:8002', '212.74.226.188:9000', '212.74.226.188:10000']
+        labels:
+          gpu_type: comfyui-cluster-2-t4
+
+  - job_name: 'comfyui-cluster-4'
+    static_configs:
+      - targets: ['81.177.223.32:8001', '81.177.223.32:8002', '81.177.223.32:8003', '81.177.223.32:8004', '81.177.223.32:9000', '81.177.223.32:10000']
+        labels:
+          gpu_type: comfyui-cluster-4-rtx
